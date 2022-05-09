@@ -1,0 +1,17 @@
+{
+  "name": "Pixed",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --watch"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.5",
+    "html-webpack-plugin": "^5.5.0"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
