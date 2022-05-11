@@ -19,7 +19,8 @@ class App extends React.Component {
       searchQuery: '',
       reviews: [],
       searchResults: [],
-      id: 1,
+      reviewListId: 1,
+      searchListId: -1,
       showReviewList: false,
       showSearch: false,
       showSearchList: false
@@ -29,7 +30,7 @@ class App extends React.Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleUsernameSubmit = this.handleUsernameSubmit.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
-    this.setId = this.setId.bind(this);
+    this.setReviewListId = this.setReviewListId.bind(this);
 
   }
 
@@ -69,9 +70,12 @@ class App extends React.Component {
           .then((results) => {
             console.log('This line ran (2)', results);
 
-            this.setState({
-              reviews: results.data
-            });
+            if (results.data[0].review !== undefined) {
+              this.setState({
+                reviews: results.data
+              });
+            }
+
             this.revealReviewList();
           })
           .catch((error) => {
@@ -108,6 +112,7 @@ class App extends React.Component {
         });
 
         this.revealSearchList();
+        this.setSearchListId();
       })
       .catch((error) => {
         console.log(error);
@@ -115,9 +120,14 @@ class App extends React.Component {
   }
 
   revealReviewList() {
-    this.setState({
-      showReviewList: true
-    });
+    if (this.state.showReviewList === false) {
+      this.setState({
+        showReviewList: true,
+      });
+    }
+
+    this.setReviewListId();
+    console.log(this.state.reviewListId);
   }
 
   revealSearch() {
@@ -132,27 +142,33 @@ class App extends React.Component {
     })
   }
 
-  setId() {
+  setReviewListId() {
     this.setState({
-      id: this.state.id + 1,
+      reviewListId: this.state.reviewListId + 1,
+    })
+  }
+
+  setSearchListId() {
+    this.setState({
+      searchListId: this.state.searchListId - 1,
     })
   }
 
   render() {
-    const { showReviewList, showSearch, showSearchList, username, searchResults, reviews, id } = this.state;
+    const { showReviewList, showSearch, showSearchList, username, searchResults, reviews, reviewListId, searchListId } = this.state;
 
     return (
       <div>
         <div className="username-entry">
-          <UsernameEntry handleChange={this.handleUsernameChange} handleSubmit={this.handleUsernameSubmit}/>
+          <UsernameEntry setReviewListId={this.setReviewListId} handleChange={this.handleUsernameChange} handleSubmit={this.handleUsernameSubmit}/>
         </div>
-        <div key={id} className="review-list">
-          {showReviewList && <ReviewList setId={this.setId} username={username} reviews={reviews}/>}
+        <div key={reviewListId} className="review-list">
+          {showReviewList && <ReviewList setId={this.setReviewListId} username={username} reviews={reviews}/>}
         </div>
         <div className="search">
-          {showSearch && <Search handleSearchChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit}/>}
+          {showSearch && <Search  handleSearchChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit}/>}
         </div>
-        <div className="search-list">
+        <div key={searchListId} className="search-list">
           {showSearchList && <SearchList searchResults={searchResults} username={username}/>}
         </div>
       </div>

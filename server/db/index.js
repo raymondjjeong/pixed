@@ -29,7 +29,8 @@ const saveUsername = (username) => {
 
 const saveReview = (username, review, photographUrl) => {
   return Review.updateOne({
-    username: username
+    username: username,
+    photograph: photographUrl
   }, {
     review: review,
     photograph: photographUrl
