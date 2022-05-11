@@ -16,7 +16,7 @@
   \************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar Search = function Search() {\n  return /*#__PURE__*/React.createElement(\"div\", {\n    className: \"search\"\n  }, \"Search:\", /*#__PURE__*/React.createElement(\"input\", {\n    type: \"text\"\n  }));\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);\n\n//# sourceURL=webpack://Pixed/./src/Search.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar Search = function Search(props) {\n  return /*#__PURE__*/React.createElement(\"div\", {\n    className: \"search\"\n  }, \"Search:\", /*#__PURE__*/React.createElement(\"input\", {\n    type: \"text\",\n    onChange: function onChange(event) {\n      return props.handleSearchChange(event.target.value);\n    }\n  }), /*#__PURE__*/React.createElement(\"button\", {\n    onClick: props.handleSubmit\n  }, \"Submit\"));\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);\n\n//# sourceURL=webpack://Pixed/./src/Search.jsx?");
 
 /***/ })
 

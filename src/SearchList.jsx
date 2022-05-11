@@ -1,8 +1,12 @@
-const SearchList = (props) => {
+import SearchResult from './SearchResult.jsx';
 
+const SearchList = (props) => {
   return (
-    <ul>
-      {props.searchResults.map((searchResult) => <SearchResult searchResult={searchResult} />)}
-    </ul>
+    <div className="search-list">
+      Search Results:
+      {props.searchResults.map((searchResult) => <SearchResult searchResult={searchResult} username={props.username}/>)}
+    </div>
   );
 }
+
+export default SearchList;

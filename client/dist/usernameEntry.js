@@ -16,7 +16,7 @@
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar UsernameEntry = function UsernameEntry(props) {\n  return /*#__PURE__*/React.createElement(\"div\", null, \"Enter Username:\", /*#__PURE__*/React.createElement(\"input\", {\n    type: \"text\"\n  }), /*#__PURE__*/React.createElement(\"button\", {\n    type: \"button\",\n    onClick: props.handleSubmit\n  }, \"Submit\"));\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UsernameEntry);\n\n//# sourceURL=webpack://Pixed/./src/UsernameEntry.jsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar UsernameEntry = function UsernameEntry(props) {\n  return /*#__PURE__*/React.createElement(\"div\", null, \"Enter Username:\", /*#__PURE__*/React.createElement(\"input\", {\n    type: \"text\",\n    onChange: function onChange(event) {\n      return props.handleChange(event.target.value);\n    }\n  }), /*#__PURE__*/React.createElement(\"button\", {\n    type: \"button\",\n    onClick: props.handleSubmit\n  }, \"Submit\"));\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UsernameEntry);\n\n//# sourceURL=webpack://Pixed/./src/UsernameEntry.jsx?");
 
 /***/ })
 

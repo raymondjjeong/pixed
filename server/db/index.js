@@ -2,34 +2,37 @@ const mongoose = require('mongoose');
 
 const DATABASE = 'reviewsOfPhotographs';
 
-mongoose.connect(`mongodb://localhost:8080/${DATABASE}`);
+mongoose.connect(`mongodb://localhost/${DATABASE}`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log('Connected to database'))
+  .catch((error) => console.log('Failed to connect to database', error));
 
 const reviewSchema = new mongoose.Schema({
   username: String,
   photograph: String,
   review: String
-})
-  .then(() => console.log('Connected to database'))
-  .catch((error) => console.log('Failed to connect to database', error));
+});
 
 const Review = mongoose.model('Review', reviewSchema);
 
-const savePhotograph = (username, photographUrl) => {
+const saveUsername = (username) => {
   return Review.updateOne({
-    photograph: photographUrl
+    username: username
   }, {
-    username: username,
-    photograph: photographUrl
+    username: username
   }, {
     upsert: true
   });
 };
 
-const saveReview = (review, photographUrl) => {
+const saveReview = (username, review, photographUrl) => {
   return Review.updateOne({
-    photograph: photographUrl
+    username: username
   }, {
-    review: review
+    review: review,
+    photograph: photographUrl
   }, {
     upsert: true
   })
@@ -39,5 +42,11 @@ const getReviews = (username) => {
   return Review.find({
     username: username
   }, null, null);
+};
+
+module.exports = {
+  saveUsername,
+  saveReview,
+  getReviews
 };
 

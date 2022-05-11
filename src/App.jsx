@@ -16,9 +16,10 @@ class App extends React.Component {
 
     this.state = {
       username: '',
-      query: '',
+      searchQuery: '',
       reviews: [],
       searchResults: [],
+      id: 1,
       showReviewList: false,
       showSearch: false,
       showSearchList: false
@@ -28,6 +29,7 @@ class App extends React.Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleUsernameSubmit = this.handleUsernameSubmit.bind(this);
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.setId = this.setId.bind(this);
 
   }
 
@@ -39,47 +41,67 @@ class App extends React.Component {
 
   handleSearchChange(query) {
     this.setState({
-      query: query
+      searchQuery: query
     });
   }
 
   handleUsernameSubmit() {
+    const { username } = this.state;
 
     this.setState({
       showSearch: true
     });
     console.log('Submitted');
-    axios.post('/photographReviews', {
+    axios.post('http://127.0.0.1:8080/photographReviews/reviews', {
       username: username
+    }, {
+      headers: {
+        'Access-Control-Request-Method': 'POST',
+        'Content-Type': 'application/json',
+      }
     })
       .then((results) => {
-        this.setState({
-          reviews: results
-        });
-        this.revealReviewList();
+        axios.get('http://127.0.0.1:8080/photographReviews/reviews', {
+          params: {
+            username: username
+          }
+        })
+          .then((results) => {
+            console.log('This line ran (2)', results);
+
+            this.setState({
+              reviews: results.data
+            });
+            this.revealReviewList();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         this.revealSearch();
 
       })
       .catch((error) => {
-        console.log(error);
+        console.log('This line ran', error);
       });
   }
 
   handleSearchSubmit() {
-    const { query } = this.state;
-
-    axios.get('https://api.pexels.com/v1/search', {
+    const { searchQuery } = this.state;
+    
+    axios({
+      method: 'get',
+      url: 'https://api.pexels.com/v1/search',
       params: {
-        query: query,
+        query: searchQuery,
         per_page: 5
-      }
-    }, {
+      },
       headers: {
-        Authorization: PEXELS_API_KEY
+        'Authorization': PEXELS_API_KEY,
+        'Access-Control-Request-Headers': 'Authorization'
       }
     })
       .then((results) => {
-        const { photos } = results;
+        const { photos } = results.data;
 
         this.setState({
           searchResults: photos
@@ -110,25 +132,29 @@ class App extends React.Component {
     })
   }
 
+  setId() {
+    this.setState({
+      id: this.state.id + 1,
+    })
+  }
+
   render() {
-    const { showReviewList, showSearch, showSearchList } = this.state;
+    const { showReviewList, showSearch, showSearchList, username, searchResults, reviews, id } = this.state;
 
     return (
       <div>
         <div className="username-entry">
-          <UsernameEntry handleSubmit={this.handleUsernameSubmit}/>
+          <UsernameEntry handleChange={this.handleUsernameChange} handleSubmit={this.handleUsernameSubmit}/>
         </div>
-        {/* <div className="review-list">
-          Your Reviews:
-          {showReviewList && <ReviewList />}
-        </div> */}
+        <div key={id} className="review-list">
+          {showReviewList && <ReviewList setId={this.setId} username={username} reviews={reviews}/>}
+        </div>
         <div className="search">
-          {showSearch && <Search />}
+          {showSearch && <Search handleSearchChange={this.handleSearchChange} handleSubmit={this.handleSearchSubmit}/>}
         </div>
-        {/* <div className="search-list">
-          Search Results:
-          {showSearchList && <SearchList />}
-        </div> */}
+        <div className="search-list">
+          {showSearchList && <SearchList searchResults={searchResults} username={username}/>}
+        </div>
       </div>
     );
   }
